@@ -1,56 +1,39 @@
 'use client';
 
 import { useState } from "react";
-import { Button, FieldError, Form, Input, Label, TextField, Typography, Card } from "@heroui/react";
+import {
+  Button,
+  FieldError,
+  Form,
+  Input,
+  Label,
+  TextField,
+  Typography,
+  ErrorMessage,
+  Spinner
+} from "@heroui/react";
 import { login } from "./actions";
 
 export default function LoginPage() {
-  //const [state, formAction, isPending] = useActionState(login, null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setIsLoading(true);
+    setError(null);
+
     const formData = new FormData(e.currentTarget);
     const response = await login(formData);
-    console.log('auth response ', response);
+
+    if (response?.error) {
+      setError(response?.error);
+    }
+    setIsLoading(false);
   };
 
   return (
-    // <div>
-    //   <h3>Вход в систему</h3>
-    //   <form action={formAction}>
-    //     <div>
-    //       <label htmlFor="login">Логин</label>
-    //       <input
-    //         id="login"
-    //         name="login"
-    //         type="text"
-    //         required
-    //         placeholder="admin"
-    //       />
-    //     </div>
-    //
-    //     <div>
-    //       <label htmlFor="password">Пароль</label>
-    //       <input
-    //         id="password"
-    //         name="password"
-    //         type="password"
-    //         required
-    //       />
-    //     </div>
-    //
-    //     <button
-    //       type="submit"
-    //       disabled={isPending}
-    //     >
-    //       {isPending ? "Вход..." : "Войти"}
-    //     </button>
-    //
-    //     {state?.error && <div>{state.error}</div>}
-    //   </form>
-    // </div>
-
     <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
       <Typography type="h4">Кошелёк</Typography>
       <Typography type="body">Вход в систему учёта расходов</Typography>
@@ -96,10 +79,17 @@ export default function LoginPage() {
         </TextField>
 
         <div className="flex gap-2 justify-center">
-          <Button type="submit">
-            Войти
+          <Button isDisabled={isLoading} isPending={isLoading} type="submit">
+            {({isPending}) => (
+              <>
+                {isPending && <Spinner color="current" size="sm" />}
+                {isPending ? "Вход..." : "Войти"}
+              </>
+            )}
           </Button>
         </div>
+
+        {error?.length && <ErrorMessage className="text-center">{error}</ErrorMessage>}
       </Form>
     </div>
   );

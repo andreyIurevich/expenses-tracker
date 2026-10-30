@@ -22,6 +22,8 @@ export async function login(formData: FormData) {
       switch (error.type) {
         case "CredentialsSignin":
           return { error: "Неверный email или пароль" };
+        case "CallbackRouteError":
+          return { error: error?.cause?.err?.message }
         default:
           return { error: "Что-то пошло не так. Попробуйте снова" };
       }

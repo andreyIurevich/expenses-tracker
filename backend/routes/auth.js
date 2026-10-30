@@ -44,14 +44,12 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET, 
       { expiresIn: "1h" }
     );
-    /*
+
     res.json({
       message: "Успешный вход",
       token: token,
       user: { id: user.id, name: user.name, login: user.login }
     });
-    */
-    res.status(500).json({ error: "Ошибка сервера" });
   } catch (err) {
     res.status(500).json({ error: "Ошибка сервера" });
   }
