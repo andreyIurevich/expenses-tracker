@@ -1,0 +1,72 @@
+### 1. Регистрация нового пользователя
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "login": "sequre_admin",
+  "password": "123456",
+  "name": "Андрей"
+}
+
+### 2. Логин пользователя
+# @name loginRequest
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "login": "admin",
+  "password": "12345"
+}
+
+### 3. Запрос защищенных данных
+GET http://localhost:5000/api/users
+Authorization: Bearer {{loginRequest.response.body.token}}
+
+### 4. Получение списка категорий
+GET http://localhost:5000/api/categories
+Authorization: Bearer {{loginRequest.response.body.token}}
+
+### 5. Редактирование категории (Изменим категорию с ID 1)
+PUT http://localhost:5000/api/categories/1
+Authorization: Bearer {{loginRequest.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Проезд",
+  "color": "#1E3A8A"
+}
+
+### 6. Удаление категории (Удалим категорию с ID 4)
+DELETE http://localhost:5000/api/categories/4
+Authorization: Bearer {{loginRequest.response.body.token}}
+
+### 7. Получить список расходов текущего пользователя
+GET http://localhost:5000/api/expenses
+Authorization: Bearer {{loginRequest.response.body.token}}
+
+### 8. Добавить новый расход (Создадим трату на Продукты, допустим ID категории = 3)
+POST http://localhost:5000/api/expenses
+Authorization: Bearer {{loginRequest.response.body.token}}
+Content-Type: application/json
+
+{
+  "title": "Покупка продуктов в Супермаркете",
+  "amount": 1250.50,
+  "category_id": 3
+}
+
+### 9. Редактировать расход (Изменим расход с ID 1)
+PUT http://localhost:5000/api/expenses/1
+Authorization: Bearer {{loginRequest.response.body.token}}
+Content-Type: application/json
+
+{
+  "title": "Поездка на метро (изменено)",
+  "amount": 60.00
+}
+
+### 10. Удалить расход (Удалим созданный расход с ID 2)
+DELETE http://localhost:5000/api/expenses/4
+Authorization: Bearer {{loginRequest.response.body.token}}
+
+

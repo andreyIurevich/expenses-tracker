@@ -1,0 +1,17 @@
+# Зависимости (библиотеки)
+**/node_modules/
+
+# Сборка Next.js и логи
+frontend/.next/
+frontend/out/
+*.log
+
+# Локальные переменные окружения (пароли, ключи бэка и фронта)
+**/.env
+**/.env*.local
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+.idea/
